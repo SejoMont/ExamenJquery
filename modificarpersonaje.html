@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuevo Personaje</title>
+    <title>Modificar Personaje</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <style>
         .formulario {
             width: 500px;
             margin: auto;
+        }
+        .imagen{
+            width: 500px;
         }
     </style>
 </head>
@@ -29,6 +32,8 @@
                 <button type="button" id="modificarPersonaje" class='btn btn-outline-success'>Modificar</button>
             </div>
         </form>
+        <div id="serieSeleccionada"></div>
+        <div id="personajeSeleccionado"></div>
     </div>
 
 
@@ -70,7 +75,7 @@
                 var serie = parseInt($("#cajaSerie").val());
                 var personaje = parseInt($("#cajaPersonaje").val());
 
-                var request = "api/Personajes/"+personaje+"/"+serie;
+                var request = "api/Personajes/" + personaje + "/" + serie;
                 var urlApi = apiSeries + request;
 
                 $.ajax({
@@ -84,6 +89,31 @@
                 });
 
             });
+
+            $("#cajaSerie").change(function () {
+                var serie = parseInt($("#cajaSerie").val());
+                var request = "api/Series/" + serie;
+                var urlApi = apiSeries + request;
+
+                $.get(urlApi, function (serie) {
+                    var html = "";
+                    html += '<h1>' + serie.nombre + '</h1></br>';
+                    html += '<img class="imagen" src="' + serie.imagen + '"/>';
+                    $("#serieSeleccionada").html(html);
+                })
+            })
+            $("#cajaPersonaje").change(function () {
+                var personaje = parseInt($("#cajaPersonaje").val());
+                var request = "api/Personajes/" + personaje;
+                var urlApi = apiSeries + request;
+
+                $.get(urlApi, function (personaje) {
+                    var html = "";
+                    html += '<h1>' + personaje.nombre + '</h1></br>';
+                    html += '<img class="imagen" src="' + personaje.imagen + '"/>';
+                    $("#personajeSeleccionado").html(html);
+                })
+            })
         });
     </script>
 </body>
