@@ -1,0 +1,53 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serie</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        .fotoSerie{
+            width: 40%;
+        }
+    </style>
+</head>
+<body>
+    <div id="menu-container"></div>
+
+    <div class='text-center'>
+        <ul id="detallesSerie" class='list-group'></ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Url de la API
+        var apiSeries = "https://apiseriespersonajes.azurewebsites.net/";
+        // Obtén la URL actual
+        var url = new URL(window.location.href);
+        // Obtén el valor del parámetro "equipo" de la URL
+        var idSerie = url.searchParams.get("idserie");
+
+        $(document).ready(function () {
+            // Carga el navbar desde el archivo menu.html
+            $("#menu-container").load("menu.html");
+
+            var request = "api/Series/" + idSerie;
+            var urlApi = apiSeries + request;
+
+            var html = ""
+
+            $.get(urlApi, function (serie) {
+                // Crear una lista con los datos del serie
+                html = "<li class='list-group-item'><h1>"+ serie.nombre +"</h1></li>";
+                html += '<li class="list-group-item"><img class="fotoSerie" src="'+ serie.imagen +'"/></li>';
+                html += "<li class='list-group-item'><h2>Puntuacion: "+ serie.puntuacion +"</h2></li>";
+                html += "<li class='list-group-item'><h2>Año: "+ serie.anyo +"</h2></li>";
+                html += "<li class='list-group-item'><a class='btn btn-outline-success' href='/personajes.html?idserie="+serie.idSerie+"'>Personajes</a></li>";
+
+                $("#detallesSerie").html(html);
+            })
+        });
+    </script>
+</body>
+
+</html>

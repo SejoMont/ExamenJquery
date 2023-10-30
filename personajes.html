@@ -1,0 +1,67 @@
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personajes</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        .fotoPersonajes {
+            width: 40%;
+        }
+
+        .table {
+            width: 70%;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="menu-container"></div>
+
+    <table class='table table-striped text-center' id="tablaPersonajes">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Imagen</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Url de la API
+        var apiSeries = "https://apiseriespersonajes.azurewebsites.net/";
+        // Obtén la URL actual
+        var url = new URL(window.location.href);
+        // Obtén el valor del parámetro "equipo" de la URL
+        var idSerie = url.searchParams.get("idserie");
+
+        $(document).ready(function () {
+            // Carga el navbar desde el archivo menu.html
+            $("#menu-container").load("menu.html");
+
+            var request = "api/Series/PersonajesSerie/" + idSerie;
+            var urlApi = apiSeries + request;
+
+            var html = ""
+
+            $.get(urlApi, function (data) {
+                // Crear una lista con los datos del equipo
+                $.each(data, function (index, personaje) {
+                    html += '<tr>'
+                    html += '<td>' + personaje.nombre + '</td>'
+                    html += '<td> <img class="fotoPersonajes" src="' + personaje.imagen + '"/></td>'
+                    html += '</tr>'
+                })
+
+                $("#tablaPersonajes tbody").html(html);
+            })
+        });
+    </script>
+</body>
+
+</html>
